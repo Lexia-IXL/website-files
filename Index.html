@@ -1,1130 +1,834 @@
 <!DOCTYPE html>
-
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-```
-<title>Frogie's Arcade</title>
+  <title>Frogie's Arcade</title>
 
-<meta
+  <meta
     name="description"
-    content="Frogie's Arcade - a simple collection of web links and resources."
->
+    content="Frogie's Arcade - games, entertainment, and useful links."
+  >
 
-<style>
+  <style>
     * {
-        box-sizing: border-box;
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
     }
 
     html {
-        scroll-behavior: smooth;
+      scroll-behavior: smooth;
     }
 
     body {
-        margin: 0;
-        min-height: 100vh;
-        background:
-            radial-gradient(circle at top, #19352b 0%, #101715 45%, #080b0a 100%);
-        color: #ffffff;
-        font-family: Arial, Helvetica, sans-serif;
+      font-family: Arial, Helvetica, sans-serif;
+      background:
+        radial-gradient(circle at top, #173d25 0%, #08120c 45%, #040805 100%);
+      color: #ffffff;
+      min-height: 100vh;
+    }
+
+    a {
+      color: inherit;
+      text-decoration: none;
     }
 
     button,
-    input,
-    select {
-        font-family: inherit;
+    input {
+      font: inherit;
     }
 
-    /* =========================
-       LOADING SCREEN
-    ========================= */
+    /* Loading screen */
 
     #loading-screen {
-        position: fixed;
-        inset: 0;
-        z-index: 9999;
-
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        justify-content: center;
-
-        background: #101715;
-
-        text-align: center;
-
-        opacity: 1;
-        visibility: visible;
-
-        transition:
-            opacity 0.6s ease,
-            visibility 0.6s ease;
+      position: fixed;
+      inset: 0;
+      background: #050b07;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      z-index: 9999;
+      transition: opacity 0.5s ease;
     }
 
-    #loading-screen.fade-out {
-        opacity: 0;
-        visibility: hidden;
-        pointer-events: none;
+    .loader-box {
+      text-align: center;
     }
 
-    .spinner {
-        display: flex;
-        gap: 9px;
-        margin-bottom: 30px;
+    .frog {
+      font-size: 70px;
+      animation: bounce 1s infinite alternate;
     }
 
-    .spinner div {
-        width: 15px;
-        height: 15px;
-
-        border-radius: 50%;
-        background: #00ffa6;
-
-        animation: loadingBounce 0.8s infinite alternate;
+    .loading-text {
+      margin-top: 15px;
+      color: #8cff9b;
+      font-size: 18px;
     }
 
-    .spinner div:nth-child(2) {
-        animation-delay: 0.15s;
+    @keyframes bounce {
+      from {
+        transform: translateY(0);
+      }
+
+      to {
+        transform: translateY(-15px);
+      }
     }
 
-    .spinner div:nth-child(3) {
-        animation-delay: 0.3s;
+    /* Header */
+
+    header {
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      background: rgba(4, 12, 7, 0.92);
+      backdrop-filter: blur(10px);
+      border-bottom: 1px solid rgba(126, 255, 148, 0.15);
     }
 
-    @keyframes loadingBounce {
-        from {
-            transform: translateY(0);
-        }
-
-        to {
-            transform: translateY(-14px);
-        }
+    .header-inner {
+      max-width: 1200px;
+      margin: auto;
+      padding: 16px 20px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 20px;
     }
 
-    #messageforyou {
-        max-width: 800px;
-        padding: 0 20px;
-
-        font-size: 22px;
-        line-height: 1.5;
+    .logo {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-size: 22px;
+      font-weight: bold;
+      color: #8cff9b;
     }
 
-    #loading-text {
-        color: #9ca9a4;
-        font-size: 15px;
-    }
-
-    #skiploading {
-        color: #00ffa6;
-        cursor: pointer;
-        text-decoration: underline;
-    }
-
-    /* =========================
-       HEADER
-    ========================= */
-
-    #header {
-        position: sticky;
-        top: 0;
-        z-index: 1000;
-
-        height: 72px;
-
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-
-        padding: 0 22px;
-
-        background: rgba(16, 23, 21, 0.94);
-        border-bottom: 1px solid rgba(255, 255, 255, 0.08);
-
-        backdrop-filter: blur(10px);
-    }
-
-    #brand {
-        display: flex;
-        align-items: center;
-        gap: 12px;
-
-        cursor: pointer;
-
-        user-select: none;
-    }
-
-    #brand-icon {
-        width: 40px;
-        height: 40px;
-
-        display: flex;
-        align-items: center;
-        justify-content: center;
-
-        border-radius: 12px;
-
-        background: #00ffa6;
-        color: #07110d;
-
-        font-size: 23px;
-    }
-
-    #brand-name {
-        color: #00ffa6;
-        font-size: 20px;
-        font-weight: bold;
+    .logo span {
+      font-size: 30px;
     }
 
     .header-buttons {
-        display: flex;
-        align-items: center;
-        gap: 8px;
+      display: flex;
+      gap: 8px;
     }
 
     .header-button {
-        width: 43px;
-        height: 43px;
-
-        border: 1px solid rgba(255, 255, 255, 0.1);
-        border-radius: 11px;
-
-        background: #18211e;
-        color: white;
-
-        font-size: 19px;
-
-        cursor: pointer;
-
-        transition:
-            transform 0.2s ease,
-            background 0.2s ease;
+      border: 1px solid rgba(140, 255, 155, 0.25);
+      background: #0c1d12;
+      color: white;
+      border-radius: 10px;
+      padding: 9px 12px;
+      cursor: pointer;
+      transition: 0.2s;
     }
 
     .header-button:hover {
-        transform: translateY(-2px);
-        background: #22302a;
+      background: #173d25;
+      transform: translateY(-2px);
     }
 
-    /* =========================
-       MAIN
-    ========================= */
+    /* Main */
 
-    #main {
-        width: min(1050px, 92%);
-        margin: 0 auto;
-
-        padding: 70px 0 130px;
-
-        text-align: center;
+    main {
+      max-width: 1200px;
+      margin: auto;
+      padding: 55px 20px;
     }
 
-    #maintitle {
-        margin: 0;
-
-        color: #00ffa6;
-
-        font-size: clamp(30px, 6vw, 52px);
-
-        letter-spacing: 1px;
-
-        text-shadow:
-            0 0 20px rgba(0, 255, 166, 0.15);
+    .hero {
+      text-align: center;
+      margin-bottom: 45px;
     }
 
-    #subtitle {
-        max-width: 650px;
-
-        margin: 18px auto 42px;
-
-        color: #a9b5b0;
-
-        font-size: 16px;
-        line-height: 1.6;
+    .hero-icon {
+      font-size: 75px;
+      margin-bottom: 10px;
     }
 
-    /* =========================
-       APP BUTTONS
-    ========================= */
-
-    #apps {
-        display: flex;
-        flex-wrap: wrap;
-        justify-content: center;
-
-        gap: 15px;
-
-        margin-bottom: 45px;
+    .hero h1 {
+      font-size: clamp(35px, 7vw, 72px);
+      color: #8cff9b;
+      text-shadow: 0 0 25px rgba(76, 255, 108, 0.18);
     }
 
-    .app-button {
-        width: 105px;
-        min-height: 105px;
-
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        justify-content: center;
-
-        gap: 8px;
-
-        border: 1px solid rgba(255, 255, 255, 0.08);
-        border-radius: 17px;
-
-        background: #151e1b;
-        color: white;
-
-        cursor: pointer;
-
-        transition:
-            transform 0.2s ease,
-            border-color 0.2s ease,
-            background 0.2s ease;
+    .hero p {
+      margin-top: 12px;
+      color: #b9c8bd;
+      font-size: 17px;
     }
 
-    .app-button:hover {
-        transform: translateY(-6px);
+    /* Search */
 
-        border-color: #00ffa6;
+    .search-area {
+      max-width: 700px;
+      margin: 0 auto 45px;
+    }
 
-        background: #1c2924;
+    .search-box {
+      display: flex;
+      gap: 10px;
+    }
+
+    .search-box input {
+      flex: 1;
+      min-width: 0;
+      padding: 15px 17px;
+      border-radius: 12px;
+      border: 1px solid rgba(140, 255, 155, 0.2);
+      background: #0b1710;
+      color: white;
+      outline: none;
+    }
+
+    .search-box input:focus {
+      border-color: #65ff7b;
+      box-shadow: 0 0 0 3px rgba(101, 255, 123, 0.1);
+    }
+
+    .search-button {
+      padding: 15px 20px;
+      border: none;
+      border-radius: 12px;
+      background: #54d96a;
+      color: #061009;
+      font-weight: bold;
+      cursor: pointer;
+      transition: 0.2s;
+    }
+
+    .search-button:hover {
+      transform: translateY(-2px);
+      background: #73ff88;
+    }
+
+    /* Cards */
+
+    .section-title {
+      text-align: center;
+      margin-bottom: 22px;
+      font-size: 28px;
+      color: #ffffff;
+    }
+
+    .apps {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 18px;
+    }
+
+    .app-card {
+      background: linear-gradient(
+        145deg,
+        rgba(20, 52, 31, 0.95),
+        rgba(8, 20, 12, 0.95)
+      );
+      border: 1px solid rgba(140, 255, 155, 0.15);
+      border-radius: 18px;
+      padding: 25px;
+      min-height: 170px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      transition: 0.25s;
+    }
+
+    .app-card:hover {
+      transform: translateY(-6px);
+      border-color: rgba(140, 255, 155, 0.5);
+      box-shadow: 0 12px 30px rgba(0, 0, 0, 0.3);
     }
 
     .app-icon {
-        width: 50px;
-        height: 50px;
-
-        display: flex;
-        align-items: center;
-        justify-content: center;
-
-        border-radius: 14px;
-
-        background: #25332d;
-
-        font-size: 25px;
+      font-size: 40px;
+      margin-bottom: 15px;
     }
 
-    .app-name {
-        font-size: 13px;
-        font-weight: bold;
+    .app-card h3 {
+      font-size: 20px;
+      margin-bottom: 8px;
     }
 
-    /* =========================
-       SEARCH
-    ========================= */
-
-    #search-section {
-        width: min(700px, 100%);
-
-        margin: 0 auto;
-
-        padding: 25px;
-
-        border: 1px solid rgba(255, 255, 255, 0.08);
-        border-radius: 18px;
-
-        background: rgba(21, 30, 27, 0.8);
-
-        box-shadow:
-            0 15px 50px rgba(0, 0, 0, 0.25);
+    .app-card p {
+      color: #aebdb2;
+      font-size: 14px;
+      line-height: 1.5;
+      margin-bottom: 18px;
     }
 
-    #search-form {
-        display: flex;
-        gap: 10px;
+    .open-button {
+      display: inline-block;
+      width: 100%;
+      text-align: center;
+      padding: 11px;
+      border-radius: 10px;
+      background: #12321d;
+      border: 1px solid rgba(140, 255, 155, 0.18);
+      color: #8cff9b;
+      transition: 0.2s;
     }
 
-    #teacher-lookup {
-        flex: 1;
-
-        min-width: 0;
-
-        padding: 15px 17px;
-
-        border: 1px solid #34423c;
-        border-radius: 10px;
-
-        outline: none;
-
-        background: #0f1513;
-        color: white;
-
-        font-size: 16px;
+    .open-button:hover {
+      background: #1d4c29;
     }
 
-    #teacher-lookup:focus {
-        border-color: #00ffa6;
+    /* Region */
+
+    .region-section {
+      margin-top: 50px;
+      text-align: center;
     }
 
-    #teacher-lookup::placeholder {
-        color: #718078;
+    .region-select {
+      margin-top: 15px;
+      padding: 12px 18px;
+      border-radius: 10px;
+      background: #0b1710;
+      color: white;
+      border: 1px solid rgba(140, 255, 155, 0.2);
+      cursor: pointer;
     }
 
-    #search-button {
-        padding: 0 22px;
+    /* Discord */
 
-        border: 0;
-        border-radius: 10px;
-
-        background: #00ffa6;
-        color: #07110d;
-
-        font-weight: bold;
-
-        cursor: pointer;
-
-        transition: transform 0.2s ease;
+    .discord-section {
+      margin-top: 50px;
+      padding: 30px;
+      text-align: center;
+      border-radius: 18px;
+      background: rgba(20, 52, 31, 0.6);
+      border: 1px solid rgba(140, 255, 155, 0.12);
     }
 
-    #search-button:hover {
-        transform: scale(1.03);
+    .discord-section p {
+      color: #b9c8bd;
+      margin: 10px 0 20px;
     }
 
-    #regionchanger {
-        width: 100%;
-
-        margin-top: 12px;
-
-        padding: 12px;
-
-        border: 1px solid #34423c;
-        border-radius: 9px;
-
-        background: #0f1513;
-        color: white;
-
-        outline: none;
+    .discord-button {
+      display: inline-block;
+      padding: 13px 22px;
+      border-radius: 10px;
+      background: #5865f2;
+      color: white;
+      font-weight: bold;
+      transition: 0.2s;
     }
 
-    /* =========================
-       DISCORD BUTTON
-    ========================= */
-
-    #discord {
-        margin-top: 25px;
-
-        padding: 14px 24px;
-
-        border: 0;
-        border-radius: 10px;
-
-        background: #5865f2;
-        color: white;
-
-        font-weight: bold;
-
-        cursor: pointer;
-
-        transition:
-            transform 0.2s ease,
-            opacity 0.2s ease;
+    .discord-button:hover {
+      transform: translateY(-2px);
+      filter: brightness(1.1);
     }
 
-    #discord:hover {
-        transform: translateY(-2px);
-        opacity: 0.9;
+    /* Footer */
+
+    footer {
+      margin-top: 60px;
+      padding: 25px 20px;
+      text-align: center;
+      color: #718077;
+      border-top: 1px solid rgba(140, 255, 155, 0.08);
     }
 
-    /* =========================
-       PRIVACY
-    ========================= */
-
-    #privacy {
-        display: inline-block;
-
-        margin-top: 25px;
-
-        color: #00ffa6;
-
-        text-decoration: none;
-    }
-
-    #privacy:hover {
-        text-decoration: underline;
-    }
-
-    /* =========================
-       FOOTER
-    ========================= */
-
-    #footer {
-        position: fixed;
-        left: 0;
-        right: 0;
-        bottom: 0;
-
-        min-height: 65px;
-
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-
-        padding: 0 22px;
-
-        background: rgba(16, 23, 21, 0.96);
-
-        border-top: 1px solid rgba(255, 255, 255, 0.08);
-
-        backdrop-filter: blur(10px);
-    }
-
-    #online {
-        margin: 0;
-
-        color: #82908a;
-
-        font-size: 14px;
-    }
-
-    #footer-buttons {
-        display: flex;
-        gap: 8px;
-    }
-
-    .footer-button {
-        width: 42px;
-        height: 42px;
-
-        border: 1px solid rgba(255, 255, 255, 0.08);
-        border-radius: 50%;
-
-        background: #18211e;
-        color: white;
-
-        font-size: 19px;
-
-        cursor: pointer;
-    }
-
-    /* =========================
-       NOTIFICATION
-    ========================= */
+    /* Notifications */
 
     #notification {
-        position: fixed;
-
-        left: 50%;
-        bottom: 85px;
-
-        transform: translateX(-50%) translateY(20px);
-
-        z-index: 9000;
-
-        width: min(450px, 90%);
-
-        padding: 15px 18px;
-
-        border: 1px solid rgba(255, 255, 255, 0.1);
-        border-radius: 12px;
-
-        background: #17201c;
-
-        color: white;
-
-        text-align: center;
-
-        opacity: 0;
-        visibility: hidden;
-
-        transition:
-            opacity 0.25s ease,
-            transform 0.25s ease,
-            visibility 0.25s ease;
+      position: fixed;
+      bottom: 25px;
+      right: 25px;
+      max-width: 320px;
+      padding: 15px 18px;
+      border-radius: 12px;
+      background: #14251a;
+      border: 1px solid rgba(140, 255, 155, 0.25);
+      color: white;
+      opacity: 0;
+      transform: translateY(20px);
+      pointer-events: none;
+      transition: 0.3s;
+      z-index: 9998;
     }
 
     #notification.show {
-        opacity: 1;
-        visibility: visible;
-
-        transform: translateX(-50%) translateY(0);
+      opacity: 1;
+      transform: translateY(0);
     }
 
-    /* =========================
-       MOBILE
-    ========================= */
+    /* Mobile */
 
-    @media (max-width: 650px) {
+    @media (max-width: 600px) {
+      .header-inner {
+        flex-direction: column;
+      }
 
-        #header {
-            padding: 0 12px;
-        }
+      .header-buttons {
+        width: 100%;
+        justify-content: center;
+      }
 
-        #brand-name {
-            font-size: 16px;
-        }
+      main {
+        padding-top: 35px;
+      }
 
-        #brand-icon {
-            width: 35px;
-            height: 35px;
-        }
+      .search-box {
+        flex-direction: column;
+      }
 
-        .header-button {
-            width: 38px;
-            height: 38px;
-        }
+      .search-button {
+        width: 100%;
+      }
 
-        #main {
-            padding-top: 45px;
-        }
-
-        #apps {
-            gap: 9px;
-        }
-
-        .app-button {
-            width: 88px;
-            min-height: 90px;
-        }
-
-        .app-icon {
-            width: 42px;
-            height: 42px;
-        }
-
-        #search-form {
-            flex-direction: column;
-        }
-
-        #search-button {
-            padding: 13px;
-        }
-
-        #footer {
-            padding: 0 12px;
-        }
-
-        #messageforyou {
-            font-size: 17px;
-        }
+      .hero-icon {
+        font-size: 55px;
+      }
     }
-</style>
-```
-
+  </style>
 </head>
 
 <body>
 
-```
-<!-- =========================
-     LOADING SCREEN
-========================== -->
-
-<div id="loading-screen">
-
-    <div class="spinner">
-        <div></div>
-        <div></div>
-        <div></div>
+  <!-- Loading Screen -->
+  <div id="loading-screen">
+    <div class="loader-box">
+      <div class="frog">🐸</div>
+      <div class="loading-text">Loading Frogie's Arcade...</div>
     </div>
+  </div>
 
-    <h1 id="messageforyou">
-        Welcome to Frogie's Arcade
-    </h1>
+  <!-- Header -->
+  <header>
+    <div class="header-inner">
 
-    <p id="loading-text">
-        Loading...
-    </p>
+      <a href="#" class="logo">
+        <span>🐸</span>
+        Frogie's Arcade
+      </a>
+
+      <div class="header-buttons">
+        <button class="header-button" onclick="showNotice('Welcome to Frogie\\'s Arcade!')">
+          🏠 Home
+        </button>
+
+        <button class="header-button" onclick="showNotice('More features coming soon!')">
+          ⚙️ Settings
+        </button>
+      </div>
+
+    </div>
+  </header>
+
+  <!-- Main -->
+  <main>
+
+    <section class="hero">
+
+      <div class="hero-icon">🐸</div>
+
+      <h1>Frogie's Arcade</h1>
+
+      <p>
+        Welcome! Choose something below to get started.
+      </p>
+
+    </section>
+
+    <!-- Search -->
+    <section class="search-area">
+
+      <div class="search-box">
+
+        <input
+          id="searchInput"
+          type="text"
+          placeholder="Search the web..."
+          autocomplete="off"
+        >
+
+        <button
+          class="search-button"
+          onclick="performSearch()"
+        >
+          Search
+        </button>
+
+      </div>
+
+    </section>
+
+    <!-- Apps -->
+    <section>
+
+      <h2 class="section-title">Quick Links</h2>
+
+      <div class="apps">
+
+        <div class="app-card">
+
+          <div>
+            <div class="app-icon">🎮</div>
+
+            <h3>Traxmojo</h3>
+
+            <p>
+              Open Traxmojo.
+            </p>
+          </div>
+
+          <a
+            class="open-button"
+            href="https://traxmojo.com/"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            Open
+          </a>
+
+        </div>
+
+
+        <div class="app-card">
+
+          <div>
+            <div class="app-icon">🎬</div>
+
+            <h3>Movies</h3>
+
+            <p>
+              Open the movie site.
+            </p>
+          </div>
+
+          <a
+            class="open-button"
+            href="https://watch.spencerdevs.xyz/"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            Open
+          </a>
+
+        </div>
+
+
+        <div class="app-card">
+
+          <div>
+            <div class="app-icon">🎵</div>
+
+            <h3>TikTok</h3>
+
+            <p>
+              Open TikTok.
+            </p>
+          </div>
+
+          <a
+            class="open-button"
+            href="https://www.tiktok.com/"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            Open
+          </a>
+
+        </div>
+
+
+        <div class="app-card">
+
+          <div>
+            <div class="app-icon">🟣</div>
+
+            <h3>Twitch</h3>
+
+            <p>
+              Open Twitch.
+            </p>
+          </div>
+
+          <a
+            class="open-button"
+            href="https://www.twitch.tv/"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            Open
+          </a>
+
+        </div>
+
+
+        <div class="app-card">
+
+          <div>
+            <div class="app-icon">▶️</div>
+
+            <h3>YouTube</h3>
+
+            <p>
+              Open YouTube.
+            </p>
+          </div>
+
+          <a
+            class="open-button"
+            href="https://www.youtube.com/"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            Open
+          </a>
+
+        </div>
+
+
+        <div class="app-card">
+
+          <div>
+            <div class="app-icon">💬</div>
+
+            <h3>Discord</h3>
+
+            <p>
+              Open Discord.
+            </p>
+          </div>
+
+          <a
+            class="open-button"
+            href="https://discord.com/"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            Open
+          </a>
+
+        </div>
+
+      </div>
+
+    </section>
+
+
+    <!-- Region -->
+    <section class="region-section">
+
+      <h2 class="section-title">Region</h2>
+
+      <p>
+        Choose your preferred region.
+      </p>
+
+      <select
+        id="regionSelect"
+        class="region-select"
+        onchange="saveRegion()"
+      >
+        <option value="us">United States</option>
+        <option value="ca">Canada</option>
+        <option value="uk">United Kingdom</option>
+        <option value="au">Australia</option>
+      </select>
+
+    </section>
+
+
+    <!-- Discord -->
+    <section class="discord-section">
+
+      <h2>🐸 Join the Community</h2>
+
+      <p>
+        Connect with the community on Discord.
+      </p>
+
+      <a
+        class="discord-button"
+        href="https://discord.com/"
+        target="_blank"
+        rel="noopener noreferrer"
+      >
+        Open Discord
+      </a>
+
+    </section>
+
+  </main>
+
+
+  <!-- Footer -->
+  <footer>
 
     <p>
-        <a id="skiploading" onclick="loadthething()">
-            Skip loading
-        </a>
+      🐸 Frogie's Arcade
     </p>
 
-</div>
-
-
-<!-- =========================
-     HEADER
-========================== -->
-
-<header id="header">
-
-    <div id="brand" onclick="goHome()">
-
-        <div id="brand-icon">
-            🐸
-        </div>
-
-        <div id="brand-name">
-            FROGIE'S ARCADE
-        </div>
-
-    </div>
-
-    <div class="header-buttons">
-
-        <button
-            class="header-button"
-            title="Math"
-            onclick="searchWeb('math')">
-            🧮
-        </button>
-
-        <button
-            class="header-button"
-            title="Reading"
-            onclick="searchWeb('reading')">
-            📚
-        </button>
-
-        <button
-            class="header-button"
-            title="Partners"
-            onclick="showMessage('Partners section is not configured yet.')">
-            🤝
-        </button>
-
-        <button
-            class="header-button"
-            title="Extras"
-            onclick="showMessage('Extras section is not configured yet.')">
-            ➕
-        </button>
-
-    </div>
-
-</header>
-
-
-<!-- =========================
-     MAIN
-========================== -->
-
-<main id="main">
-
-    <h1 id="maintitle">
-        RgOUnt'i wgYwAt X4
-    </h1>
-
-    <p id="subtitle">
-        Welcome to Frogie's Arcade. Choose an app below or use the
-        search box to find something on the web.
+    <p style="margin-top: 8px;">
+      All-in-one arcade homepage
     </p>
 
+  </footer>
 
-    <!-- APP BUTTONS -->
 
-    <section id="apps">
+  <!-- Notification -->
+  <div id="notification"></div>
 
-        <button
-            class="app-button"
-            onclick="openLink('https://traxmojo.com/')">
 
-            <div class="app-icon">
-                🚀
-            </div>
+  <script>
 
-            <div class="app-name">
-                Traxmojo
-            </div>
+    /* Loading */
 
-        </button>
+    window.addEventListener("load", function () {
 
-
-        <button
-            class="app-button"
-            onclick="openLink('https://watch.spencerdevs.xyz/')">
-
-            <div class="app-icon">
-                🎬
-            </div>
-
-            <div class="app-name">
-                Movies
-            </div>
-
-        </button>
-
-
-        <button
-            class="app-button"
-            onclick="openLink('https://www.tiktok.com/')">
-
-            <div class="app-icon">
-                🎵
-            </div>
-
-            <div class="app-name">
-                TikTok
-            </div>
-
-        </button>
-
-
-        <button
-            class="app-button"
-            onclick="openLink('https://www.twitch.tv/')">
-
-            <div class="app-icon">
-                🎮
-            </div>
-
-            <div class="app-name">
-                Twitch
-            </div>
-
-        </button>
-
-
-        <button
-            class="app-button"
-            onclick="openLink('https://www.youtube.com/')">
-
-            <div class="app-icon">
-                ▶️
-            </div>
-
-            <div class="app-name">
-                YouTube
-            </div>
-
-        </button>
-
-
-        <button
-            class="app-button"
-            onclick="openLink('https://discord.com/login')">
-
-            <div class="app-icon">
-                💬
-            </div>
-
-            <div class="app-name">
-                Discord
-            </div>
-
-        </button>
-
-    </section>
-
-
-    <!-- SEARCH -->
-
-    <section id="search-section">
-
-        <form id="search-form">
-
-            <input
-                id="teacher-lookup"
-                type="text"
-                placeholder="Search the web or enter a URL..."
-                autocomplete="off"
-            >
-
-            <button
-                id="search-button"
-                type="submit">
-                Search
-            </button>
-
-        </form>
-
-
-        <select id="regionchanger">
-
-            <option value="default">
-                Dallas, Texas (default)
-            </option>
-
-            <option value="nyc">
-                NYC, New York
-            </option>
-
-            <option value="stockholm">
-                Stockholm, Sweden
-            </option>
-
-            <option value="tokyo">
-                Tokyo, Japan
-            </option>
-
-            <option value="montreal">
-                Montreal, Canada
-            </option>
-
-            <option value="singapore">
-                Singapore
-            </option>
-
-        </select>
-
-    </section>
-
-
-    <!-- DISCORD -->
-
-    <button
-        id="discord"
-        onclick="openLink('https://discord.gg/fErn6KteQn')">
-        Join the Discord for more links
-    </button>
-
-
-    <br>
-
-    <a
-        id="privacy"
-        href="#"
-        onclick="showMessage('Privacy policy has not been configured yet.'); return false;">
-        Privacy Policy
-    </a>
-
-</main>
-
-
-<!-- =========================
-     NOTIFICATION
-========================== -->
-
-<div id="notification"></div>
-
-
-<!-- =========================
-     FOOTER
-========================== -->
-
-<footer id="footer">
-
-    <p id="online">
-        online users: —
-    </p>
-
-    <div id="footer-buttons">
-
-        <button
-            class="footer-button"
-            title="Settings"
-            onclick="showMessage('Settings are not configured in this standalone version.')">
-            ⚙️
-        </button>
-
-        <button
-            class="footer-button"
-            title="Profile"
-            onclick="showMessage('Profiles are not configured in this standalone version.')">
-            👤
-        </button>
-
-    </div>
-
-</footer>
-
-
-<!-- =========================
-     JAVASCRIPT
-========================== -->
-
-<script>
-
-    /*
-     * Open a website in a new tab.
-     */
-    function openLink(url) {
-
-        window.open(
-            url,
-            "_blank",
-            "noopener,noreferrer"
-        );
-
-    }
-
-
-    /*
-     * Go back to the homepage.
-     */
-    function goHome() {
-
-        window.scrollTo({
-            top: 0,
-            behavior: "smooth"
-        });
-
-    }
-
-
-    /*
-     * Search using DuckDuckGo.
-     */
-    function searchWeb(query) {
-
-        const url =
-            "https://duckduckgo.com/?q=" +
-            encodeURIComponent(query);
-
-        openLink(url);
-
-    }
-
-
-    /*
-     * Loading screen.
-     */
-    function loadthething() {
+      setTimeout(function () {
 
         const loadingScreen =
-            document.getElementById("loading-screen");
+          document.getElementById("loading-screen");
 
-        loadingScreen.classList.add("fade-out");
+        loadingScreen.style.opacity = "0";
 
-    }
+        setTimeout(function () {
+          loadingScreen.style.display = "none";
+        }, 500);
 
-
-    /*
-     * Automatically remove the loading screen.
-     */
-    window.addEventListener("load", function() {
-
-        setTimeout(function() {
-
-            loadthething();
-
-        }, 1200);
+      }, 700);
 
     });
 
 
-    /*
-     * Search form.
-     */
-    document
-        .getElementById("search-form")
-        .addEventListener("submit", function(event) {
+    /* Notifications */
 
-            event.preventDefault();
-
-            const input =
-                document.getElementById("teacher-lookup");
-
-            let value =
-                input.value.trim();
-
-            if (!value) {
-
-                showMessage("Please enter something to search.");
-
-                return;
-
-            }
-
-
-            let url;
-
-
-            /*
-             * If the user entered a complete URL,
-             * open that URL.
-             */
-            if (
-                value.startsWith("https://") ||
-                value.startsWith("http://")
-            ) {
-
-                url = value;
-
-            }
-
-
-            /*
-             * If it looks like a domain,
-             * add HTTPS automatically.
-             */
-            else if (
-                value.includes(".") &&
-                !value.includes(" ")
-            ) {
-
-                url = "https://" + value;
-
-            }
-
-
-            /*
-             * Otherwise search DuckDuckGo.
-             */
-            else {
-
-                url =
-                    "https://duckduckgo.com/?q=" +
-                    encodeURIComponent(value);
-
-            }
-
-
-            openLink(url);
-
-        });
-
-
-    /*
-     * Save selected region.
-     */
-    const regionSelect =
-        document.getElementById("regionchanger");
-
-
-    const savedRegion =
-        localStorage.getItem("calculusregion");
-
-
-    if (savedRegion) {
-
-        regionSelect.value = savedRegion;
-
-    }
-
-
-    regionSelect.addEventListener(
-        "change",
-        function() {
-
-            localStorage.setItem(
-                "calculusregion",
-                this.value
-            );
-
-            showMessage(
-                "Region saved: " + this.options[this.selectedIndex].text
-            );
-
-        }
-    );
-
-
-    /*
-     * Small notification system.
-     */
     let notificationTimer;
 
+    function showNotice(message) {
 
-    function showMessage(message) {
+      const notification =
+        document.getElementById("notification");
 
-        const notification =
-            document.getElementById("notification");
+      notification.textContent = message;
 
+      notification.classList.add("show");
 
-        notification.textContent = message;
+      clearTimeout(notificationTimer);
 
-        notification.classList.add("show");
+      notificationTimer = setTimeout(function () {
 
+        notification.classList.remove("show");
 
-        clearTimeout(notificationTimer);
-
-
-        notificationTimer =
-            setTimeout(function() {
-
-                notification.classList.remove("show");
-
-            }, 3000);
+      }, 2500);
 
     }
 
-</script>
-```
+
+    /* Search */
+
+    function performSearch() {
+
+      const input =
+        document.getElementById("searchInput");
+
+      const query = input.value.trim();
+
+      if (!query) {
+
+        showNotice("Type something to search.");
+
+        input.focus();
+
+        return;
+      }
+
+      /*
+        If the user enters a complete URL,
+        open that URL.
+
+        Otherwise search DuckDuckGo.
+      */
+
+      let destination;
+
+      if (
+        query.startsWith("https://") ||
+        query.startsWith("http://")
+      ) {
+
+        destination = query;
+
+      } else {
+
+        destination =
+          "https://duckduckgo.com/?q=" +
+          encodeURIComponent(query);
+
+      }
+
+      window.open(
+        destination,
+        "_blank",
+        "noopener,noreferrer"
+      );
+
+    }
+
+
+    /* Enter key for search */
+
+    document
+      .getElementById("searchInput")
+      .addEventListener("keydown", function(event) {
+
+        if (event.key === "Enter") {
+
+          performSearch();
+
+        }
+
+      });
+
+
+    /* Region */
+
+    function saveRegion() {
+
+      const select =
+        document.getElementById("regionSelect");
+
+      localStorage.setItem(
+        "frogieRegion",
+        select.value
+      );
+
+      showNotice(
+        "Region saved: " +
+        select.options[select.selectedIndex].text
+      );
+
+    }
+
+
+    /* Load saved region */
+
+    window.addEventListener("DOMContentLoaded", function() {
+
+      const savedRegion =
+        localStorage.getItem("frogieRegion");
+
+      if (savedRegion) {
+
+        const select =
+          document.getElementById("regionSelect");
+
+        select.value = savedRegion;
+
+      }
+
+    });
+
+  </script>
 
 </body>
 </html>
