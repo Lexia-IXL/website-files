@@ -1,0 +1,685 @@
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+```
+<title>IXL | Math, Language Arts, Science, Social Studies, and Spanish</title>
+
+<meta name="description" content="Educational resources and online learning platform.">
+
+<link rel="icon" href="https://cdn.jsdelivr.net/gh/boxethan09-hub/website-files/logo.png">
+
+<style>
+    * {
+        box-sizing: border-box;
+    }
+
+    html,
+    body {
+        margin: 0;
+        padding: 0;
+        min-height: 100%;
+        font-family: Arial, Helvetica, sans-serif;
+    }
+
+    body {
+        background: #101418;
+        color: white;
+        overflow-x: hidden;
+    }
+
+    /* LOADING SCREEN */
+
+    #loading-screen {
+        position: fixed;
+        inset: 0;
+        z-index: 10000;
+        background: #101418;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        text-align: center;
+        transition: opacity 0.5s ease, visibility 0.5s ease;
+    }
+
+    #loading-screen.fade-out {
+        opacity: 0;
+        visibility: hidden;
+        pointer-events: none;
+    }
+
+    .spinner {
+        display: flex;
+        gap: 8px;
+        margin-bottom: 25px;
+    }
+
+    .spinner div {
+        width: 14px;
+        height: 14px;
+        background: #00ffa6;
+        border-radius: 50%;
+        animation: bounce 1s infinite alternate;
+    }
+
+    .spinner div:nth-child(2) {
+        animation-delay: 0.15s;
+    }
+
+    .spinner div:nth-child(3) {
+        animation-delay: 0.3s;
+    }
+
+    @keyframes bounce {
+        from {
+            transform: translateY(0);
+        }
+
+        to {
+            transform: translateY(-15px);
+        }
+    }
+
+    #messageforyou {
+        font-size: 22px;
+        max-width: 800px;
+        padding: 0 20px;
+    }
+
+    #skiploading {
+        color: #00ffa6;
+        cursor: pointer;
+        text-decoration: underline;
+    }
+
+    /* HEADER */
+
+    #header {
+        height: 75px;
+        width: 100%;
+        background: #171d22;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 0 20px;
+        border-bottom: 1px solid #293139;
+    }
+
+    .headericons {
+        width: 42px;
+        height: 42px;
+        object-fit: contain;
+        cursor: pointer;
+        margin: 0 8px;
+    }
+
+    .right {
+        display: flex;
+        align-items: center;
+    }
+
+    .logo-text {
+        font-size: 24px;
+        font-weight: bold;
+        color: #00ffa6;
+        cursor: pointer;
+    }
+
+    /* MAIN */
+
+    #roddyricchboxhome {
+        max-width: 1000px;
+        margin: 0 auto;
+        padding: 60px 20px 100px;
+        text-align: center;
+    }
+
+    #maintitle {
+        font-size: 42px;
+        margin-bottom: 35px;
+        color: #00ffa6;
+    }
+
+    .quickapps {
+        width: 75px;
+        height: 75px;
+        object-fit: cover;
+        border-radius: 15px;
+        margin: 8px;
+        cursor: pointer;
+        transition: transform 0.2s ease;
+    }
+
+    .quickapps:hover {
+        transform: scale(1.1);
+    }
+
+    /* SEARCH */
+
+    #shutitchicken {
+        margin-top: 35px;
+    }
+
+    #teacher-lookup {
+        width: min(650px, 90%);
+        padding: 15px 20px;
+        border: 2px solid #293139;
+        border-radius: 10px;
+        background: #171d22;
+        color: white;
+        font-size: 17px;
+        outline: none;
+    }
+
+    #teacher-lookup:focus {
+        border-color: #00ffa6;
+    }
+
+    #teacher-lookup::placeholder {
+        color: #87929b;
+    }
+
+    #regionchanger {
+        margin-top: 15px;
+        padding: 12px 15px;
+        border-radius: 8px;
+        background: #171d22;
+        color: white;
+        border: 1px solid #293139;
+    }
+
+    #discord {
+        margin-top: 25px;
+        padding: 13px 20px;
+        border: 0;
+        border-radius: 8px;
+        background: #5865f2;
+        color: white;
+        font-weight: bold;
+        cursor: pointer;
+    }
+
+    #discord:hover {
+        opacity: 0.85;
+    }
+
+    /* FOOTER */
+
+    #footer {
+        position: fixed;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        height: 65px;
+        background: #171d22;
+        border-top: 1px solid #293139;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 0 20px;
+    }
+
+    #online {
+        margin: 0;
+        color: #aeb7bd;
+    }
+
+    /* POPUPS */
+
+    .rizzpopup {
+        position: fixed;
+        inset: 0;
+        z-index: 9998;
+        background: rgba(0, 0, 0, 0.75);
+        display: none;
+        align-items: center;
+        justify-content: center;
+        padding: 20px;
+    }
+
+    #roddyrichesbox {
+        width: min(500px, 100%);
+        background: #171d22;
+        border: 1px solid #293139;
+        border-radius: 15px;
+        padding: 25px;
+        text-align: center;
+    }
+
+    #roddyrichesbox h5 {
+        font-size: 22px;
+        margin: 10px;
+    }
+
+    #roddyrichesbox h6 {
+        font-size: 15px;
+        line-height: 1.5;
+        color: #b8c0c5;
+    }
+
+    .smallbutton {
+        padding: 12px 25px;
+        border: 0;
+        border-radius: 8px;
+        background: #00ffa6;
+        color: #101418;
+        font-weight: bold;
+        cursor: pointer;
+    }
+
+    /* LINK */
+
+    a {
+        color: #00ffa6;
+    }
+
+    /* MOBILE */
+
+    @media (max-width: 600px) {
+        #maintitle {
+            font-size: 30px;
+        }
+
+        #header {
+            height: 65px;
+        }
+
+        .headericons {
+            width: 32px;
+            height: 32px;
+            margin: 0 3px;
+        }
+
+        .quickapps {
+            width: 60px;
+            height: 60px;
+        }
+
+        #messageforyou {
+            font-size: 17px;
+        }
+    }
+</style>
+```
+
+</head>
+
+<body>
+
+```
+<!-- LOADING SCREEN -->
+
+<div id="loading-screen">
+
+    <div class="spinner">
+        <div></div>
+        <div></div>
+        <div></div>
+    </div>
+
+    <h1 id="messageforyou">
+        frogiee WHO do you think you are sneaking into the bendy port
+        <br>
+        do you value your life?
+    </h1>
+
+    <h2>Loading...</h2>
+
+    <h3>
+        <a id="skiploading" onclick="loadthething()">skip loading</a>
+    </h3>
+
+</div>
+
+
+<!-- HEADER -->
+
+<div id="header">
+
+    <div
+        class="logo-text"
+        onclick="window.location.href='index.html'">
+        FROGIE'S ARCADE
+    </div>
+
+    <div class="right">
+
+        <img
+            class="headericons"
+            src="https://cdn.jsdelivr.net/gh/boxethan09-hub/website-files/calc.svg"
+            alt="Math"
+            onclick="openLink('https://www.google.com/search?q=math')">
+
+        <img
+            class="headericons"
+            src="https://cdn.jsdelivr.net/gh/boxethan09-hub/website-files/grid.svg"
+            alt="Reading"
+            onclick="openLink('https://www.google.com/search?q=reading')">
+
+        <img
+            class="headericons"
+            src="https://cdn.jsdelivr.net/gh/boxethan09-hub/website-files/handshake.svg"
+            alt="Partners"
+            onclick="openLink('https://example.com')">
+
+        <img
+            class="headericons"
+            src="https://cdn.jsdelivr.net/gh/boxethan09-hub/website-files/plus.svg"
+            alt="Extras"
+            onclick="openLink('https://example.com')">
+
+    </div>
+
+</div>
+
+
+<!-- MAIN CONTENT -->
+
+<div id="roddyricchboxhome">
+
+    <h1 id="maintitle">
+        RgOUnt'i wgYwAt X4
+    </h1>
+
+    <div>
+
+        <img
+            class="quickapps"
+            src="https://cdn.jsdelivr.net/gh/boxethan09-hub/website-files/traxmojo.png"
+            alt="Traxmojo"
+            onclick="openLink('https://traxmojo.com/')">
+
+        <img
+            class="quickapps"
+            src="https://cdn.jsdelivr.net/gh/boxethan09-hub/website-files/movies.jpg"
+            alt="Movies"
+            onclick="openLink('https://watch.spencerdevs.xyz/')">
+
+        <img
+            class="quickapps"
+            src="https://cdn.jsdelivr.net/gh/boxethan09-hub/website-files/tiktok.png"
+            alt="TikTok"
+            onclick="openLink('https://www.tiktok.com/')">
+
+        <img
+            class="quickapps"
+            src="https://cdn.jsdelivr.net/gh/boxethan09-hub/website-files/twitch.png"
+            alt="Twitch"
+            onclick="openLink('https://www.twitch.tv/')">
+
+        <img
+            class="quickapps"
+            src="https://cdn.jsdelivr.net/gh/boxethan09-hub/website-files/youtube.png"
+            alt="YouTube"
+            onclick="openLink('https://www.youtube.com/')">
+
+        <img
+            class="quickapps"
+            src="https://cdn.jsdelivr.net/gh/boxethan09-hub/website-files/discord.png"
+            alt="Discord"
+            onclick="openLink('https://discord.com/login')">
+
+    </div>
+
+
+    <!-- SEARCH -->
+
+    <form id="shutitchicken">
+
+        <input
+            id="teacher-lookup"
+            type="text"
+            placeholder="Search the web or enter a URL..."
+            autocomplete="off">
+
+        <br>
+
+        <select id="regionchanger">
+
+            <option value="default">
+                Dallas, Texas (default)
+            </option>
+
+            <option value="nyc">
+                NYC, New York
+            </option>
+
+            <option value="stockholm">
+                Stockholm, Sweden
+            </option>
+
+            <option value="tokyo">
+                Tokyo, Japan
+            </option>
+
+            <option value="montreal">
+                Montreal, Canada
+            </option>
+
+            <option value="singapore">
+                Singapore
+            </option>
+
+        </select>
+
+    </form>
+
+
+    <br>
+
+    <button
+        id="discord"
+        onclick="openLink('https://discord.gg/fErn6KteQn')">
+        Join the Discord for more links
+    </button>
+
+    <br>
+    <br>
+
+    <a href="privacy.html">
+        Privacy Policy
+    </a>
+
+</div>
+
+
+<!-- FOOTER -->
+
+<div id="footer">
+
+    <p id="online">
+        online users: 1
+    </p>
+
+    <div class="right">
+
+        <span
+            class="headericons"
+            title="Settings"
+            onclick="alert('Settings are not configured in the standalone GitHub version.')">
+            ⚙️
+        </span>
+
+        <span
+            class="headericons"
+            title="Profile">
+            👤
+        </span>
+
+    </div>
+
+</div>
+
+
+<!-- UPDATE POPUP -->
+
+<div class="rizzpopup" id="updatePopup">
+
+    <div id="roddyrichesbox">
+
+        <h5>welcome/welcome back!</h5>
+
+        <h5>A new update was released!</h5>
+
+        <h6>
+            frogie's arcade v4.31
+        </h6>
+
+        <p>
+            added:<br>
+            rocket league sideswipe
+        </p>
+
+        <p>
+            removed:<br>
+            nothing
+        </p>
+
+        <p>
+            changed:<br>
+            nothing
+        </p>
+
+        <p>
+            fixed:<br>
+            NOWGG.FUN FINALLY HOLY SHIT
+        </p>
+
+        <button
+            class="smallbutton"
+            onclick="closeUpdate()">
+            great!
+        </button>
+
+    </div>
+
+</div>
+
+
+<script>
+
+    /* OPEN A LINK */
+
+    function openLink(url) {
+        window.open(url, "_blank", "noopener,noreferrer");
+    }
+
+
+    /* LOADING SCREEN */
+
+    function loadthething() {
+
+        const loadingScreen =
+            document.getElementById("loading-screen");
+
+        loadingScreen.classList.add("fade-out");
+
+    }
+
+
+    /* AUTOMATICALLY FINISH LOADING */
+
+    window.addEventListener("load", function () {
+
+        setTimeout(function () {
+
+            loadthething();
+
+        }, 1200);
+
+    });
+
+
+    /* SEARCH */
+
+    document
+        .getElementById("shutitchicken")
+        .addEventListener("submit", function(event) {
+
+            event.preventDefault();
+
+            const input =
+                document.getElementById("teacher-lookup");
+
+            let value =
+                input.value.trim();
+
+            if (!value) {
+                return;
+            }
+
+            let url;
+
+            if (
+                value.startsWith("https://") ||
+                value.startsWith("http://")
+            ) {
+
+                url = value;
+
+            } else if (
+                value.includes(".") &&
+                !value.includes(" ")
+            ) {
+
+                url = "https://" + value;
+
+            } else {
+
+                url =
+                    "https://duckduckgo.com/?q=" +
+                    encodeURIComponent(value);
+
+            }
+
+            openLink(url);
+
+        });
+
+
+    /* REGION */
+
+    const regionSelect =
+        document.getElementById("regionchanger");
+
+    const savedRegion =
+        localStorage.getItem("calculusregion");
+
+    if (savedRegion) {
+        regionSelect.value = savedRegion;
+    }
+
+    regionSelect.addEventListener("change", function() {
+
+        localStorage.setItem(
+            "calculusregion",
+            this.value
+        );
+
+    });
+
+
+    /* UPDATE POPUP */
+
+    function closeUpdate() {
+
+        document
+            .getElementById("updatePopup")
+            .style.display = "none";
+
+        localStorage.setItem(
+            "updateSeen",
+            "true"
+        );
+
+    }
+
+</script>
+```
+
+</body>
+</html>
