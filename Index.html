@@ -6,44 +6,61 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
 ```
-<title>IXL | Math, Language Arts, Science, Social Studies, and Spanish</title>
+<title>Frogie's Arcade</title>
 
-<meta name="description" content="Educational resources and online learning platform.">
-
-<link rel="icon" href="https://cdn.jsdelivr.net/gh/boxethan09-hub/website-files/logo.png">
+<meta
+    name="description"
+    content="Frogie's Arcade - a simple collection of web links and resources."
+>
 
 <style>
     * {
         box-sizing: border-box;
     }
 
-    html,
+    html {
+        scroll-behavior: smooth;
+    }
+
     body {
         margin: 0;
-        padding: 0;
-        min-height: 100%;
+        min-height: 100vh;
+        background:
+            radial-gradient(circle at top, #19352b 0%, #101715 45%, #080b0a 100%);
+        color: #ffffff;
         font-family: Arial, Helvetica, sans-serif;
     }
 
-    body {
-        background: #101418;
-        color: white;
-        overflow-x: hidden;
+    button,
+    input,
+    select {
+        font-family: inherit;
     }
 
-    /* LOADING SCREEN */
+    /* =========================
+       LOADING SCREEN
+    ========================= */
 
     #loading-screen {
         position: fixed;
         inset: 0;
-        z-index: 10000;
-        background: #101418;
+        z-index: 9999;
+
         display: flex;
         flex-direction: column;
         align-items: center;
         justify-content: center;
+
+        background: #101715;
+
         text-align: center;
-        transition: opacity 0.5s ease, visibility 0.5s ease;
+
+        opacity: 1;
+        visibility: visible;
+
+        transition:
+            opacity 0.6s ease,
+            visibility 0.6s ease;
     }
 
     #loading-screen.fade-out {
@@ -54,16 +71,18 @@
 
     .spinner {
         display: flex;
-        gap: 8px;
-        margin-bottom: 25px;
+        gap: 9px;
+        margin-bottom: 30px;
     }
 
     .spinner div {
-        width: 14px;
-        height: 14px;
-        background: #00ffa6;
+        width: 15px;
+        height: 15px;
+
         border-radius: 50%;
-        animation: bounce 1s infinite alternate;
+        background: #00ffa6;
+
+        animation: loadingBounce 0.8s infinite alternate;
     }
 
     .spinner div:nth-child(2) {
@@ -74,20 +93,27 @@
         animation-delay: 0.3s;
     }
 
-    @keyframes bounce {
+    @keyframes loadingBounce {
         from {
             transform: translateY(0);
         }
 
         to {
-            transform: translateY(-15px);
+            transform: translateY(-14px);
         }
     }
 
     #messageforyou {
-        font-size: 22px;
         max-width: 800px;
         padding: 0 20px;
+
+        font-size: 22px;
+        line-height: 1.5;
+    }
+
+    #loading-text {
+        color: #9ca9a4;
+        font-size: 15px;
     }
 
     #skiploading {
@@ -96,83 +122,236 @@
         text-decoration: underline;
     }
 
-    /* HEADER */
+    /* =========================
+       HEADER
+    ========================= */
 
     #header {
-        height: 75px;
-        width: 100%;
-        background: #171d22;
+        position: sticky;
+        top: 0;
+        z-index: 1000;
+
+        height: 72px;
+
         display: flex;
         align-items: center;
         justify-content: space-between;
-        padding: 0 20px;
-        border-bottom: 1px solid #293139;
+
+        padding: 0 22px;
+
+        background: rgba(16, 23, 21, 0.94);
+        border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+
+        backdrop-filter: blur(10px);
     }
 
-    .headericons {
-        width: 42px;
-        height: 42px;
-        object-fit: contain;
-        cursor: pointer;
-        margin: 0 8px;
-    }
-
-    .right {
+    #brand {
         display: flex;
         align-items: center;
-    }
+        gap: 12px;
 
-    .logo-text {
-        font-size: 24px;
-        font-weight: bold;
-        color: #00ffa6;
         cursor: pointer;
+
+        user-select: none;
     }
 
-    /* MAIN */
+    #brand-icon {
+        width: 40px;
+        height: 40px;
 
-    #roddyricchboxhome {
-        max-width: 1000px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+
+        border-radius: 12px;
+
+        background: #00ffa6;
+        color: #07110d;
+
+        font-size: 23px;
+    }
+
+    #brand-name {
+        color: #00ffa6;
+        font-size: 20px;
+        font-weight: bold;
+    }
+
+    .header-buttons {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+    }
+
+    .header-button {
+        width: 43px;
+        height: 43px;
+
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        border-radius: 11px;
+
+        background: #18211e;
+        color: white;
+
+        font-size: 19px;
+
+        cursor: pointer;
+
+        transition:
+            transform 0.2s ease,
+            background 0.2s ease;
+    }
+
+    .header-button:hover {
+        transform: translateY(-2px);
+        background: #22302a;
+    }
+
+    /* =========================
+       MAIN
+    ========================= */
+
+    #main {
+        width: min(1050px, 92%);
         margin: 0 auto;
-        padding: 60px 20px 100px;
+
+        padding: 70px 0 130px;
+
         text-align: center;
     }
 
     #maintitle {
-        font-size: 42px;
-        margin-bottom: 35px;
+        margin: 0;
+
         color: #00ffa6;
+
+        font-size: clamp(30px, 6vw, 52px);
+
+        letter-spacing: 1px;
+
+        text-shadow:
+            0 0 20px rgba(0, 255, 166, 0.15);
     }
 
-    .quickapps {
-        width: 75px;
-        height: 75px;
-        object-fit: cover;
-        border-radius: 15px;
-        margin: 8px;
+    #subtitle {
+        max-width: 650px;
+
+        margin: 18px auto 42px;
+
+        color: #a9b5b0;
+
+        font-size: 16px;
+        line-height: 1.6;
+    }
+
+    /* =========================
+       APP BUTTONS
+    ========================= */
+
+    #apps {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+
+        gap: 15px;
+
+        margin-bottom: 45px;
+    }
+
+    .app-button {
+        width: 105px;
+        min-height: 105px;
+
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+
+        gap: 8px;
+
+        border: 1px solid rgba(255, 255, 255, 0.08);
+        border-radius: 17px;
+
+        background: #151e1b;
+        color: white;
+
         cursor: pointer;
-        transition: transform 0.2s ease;
+
+        transition:
+            transform 0.2s ease,
+            border-color 0.2s ease,
+            background 0.2s ease;
     }
 
-    .quickapps:hover {
-        transform: scale(1.1);
+    .app-button:hover {
+        transform: translateY(-6px);
+
+        border-color: #00ffa6;
+
+        background: #1c2924;
     }
 
-    /* SEARCH */
+    .app-icon {
+        width: 50px;
+        height: 50px;
 
-    #shutitchicken {
-        margin-top: 35px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+
+        border-radius: 14px;
+
+        background: #25332d;
+
+        font-size: 25px;
+    }
+
+    .app-name {
+        font-size: 13px;
+        font-weight: bold;
+    }
+
+    /* =========================
+       SEARCH
+    ========================= */
+
+    #search-section {
+        width: min(700px, 100%);
+
+        margin: 0 auto;
+
+        padding: 25px;
+
+        border: 1px solid rgba(255, 255, 255, 0.08);
+        border-radius: 18px;
+
+        background: rgba(21, 30, 27, 0.8);
+
+        box-shadow:
+            0 15px 50px rgba(0, 0, 0, 0.25);
+    }
+
+    #search-form {
+        display: flex;
+        gap: 10px;
     }
 
     #teacher-lookup {
-        width: min(650px, 90%);
-        padding: 15px 20px;
-        border: 2px solid #293139;
+        flex: 1;
+
+        min-width: 0;
+
+        padding: 15px 17px;
+
+        border: 1px solid #34423c;
         border-radius: 10px;
-        background: #171d22;
-        color: white;
-        font-size: 17px;
+
         outline: none;
+
+        background: #0f1513;
+        color: white;
+
+        font-size: 16px;
     }
 
     #teacher-lookup:focus {
@@ -180,123 +359,240 @@
     }
 
     #teacher-lookup::placeholder {
-        color: #87929b;
+        color: #718078;
+    }
+
+    #search-button {
+        padding: 0 22px;
+
+        border: 0;
+        border-radius: 10px;
+
+        background: #00ffa6;
+        color: #07110d;
+
+        font-weight: bold;
+
+        cursor: pointer;
+
+        transition: transform 0.2s ease;
+    }
+
+    #search-button:hover {
+        transform: scale(1.03);
     }
 
     #regionchanger {
-        margin-top: 15px;
-        padding: 12px 15px;
-        border-radius: 8px;
-        background: #171d22;
+        width: 100%;
+
+        margin-top: 12px;
+
+        padding: 12px;
+
+        border: 1px solid #34423c;
+        border-radius: 9px;
+
+        background: #0f1513;
         color: white;
-        border: 1px solid #293139;
+
+        outline: none;
     }
+
+    /* =========================
+       DISCORD BUTTON
+    ========================= */
 
     #discord {
         margin-top: 25px;
-        padding: 13px 20px;
+
+        padding: 14px 24px;
+
         border: 0;
-        border-radius: 8px;
+        border-radius: 10px;
+
         background: #5865f2;
         color: white;
+
         font-weight: bold;
+
         cursor: pointer;
+
+        transition:
+            transform 0.2s ease,
+            opacity 0.2s ease;
     }
 
     #discord:hover {
-        opacity: 0.85;
+        transform: translateY(-2px);
+        opacity: 0.9;
     }
 
-    /* FOOTER */
+    /* =========================
+       PRIVACY
+    ========================= */
+
+    #privacy {
+        display: inline-block;
+
+        margin-top: 25px;
+
+        color: #00ffa6;
+
+        text-decoration: none;
+    }
+
+    #privacy:hover {
+        text-decoration: underline;
+    }
+
+    /* =========================
+       FOOTER
+    ========================= */
 
     #footer {
         position: fixed;
-        bottom: 0;
         left: 0;
         right: 0;
-        height: 65px;
-        background: #171d22;
-        border-top: 1px solid #293139;
+        bottom: 0;
+
+        min-height: 65px;
+
         display: flex;
         align-items: center;
         justify-content: space-between;
-        padding: 0 20px;
+
+        padding: 0 22px;
+
+        background: rgba(16, 23, 21, 0.96);
+
+        border-top: 1px solid rgba(255, 255, 255, 0.08);
+
+        backdrop-filter: blur(10px);
     }
 
     #online {
         margin: 0;
-        color: #aeb7bd;
+
+        color: #82908a;
+
+        font-size: 14px;
     }
 
-    /* POPUPS */
-
-    .rizzpopup {
-        position: fixed;
-        inset: 0;
-        z-index: 9998;
-        background: rgba(0, 0, 0, 0.75);
-        display: none;
-        align-items: center;
-        justify-content: center;
-        padding: 20px;
+    #footer-buttons {
+        display: flex;
+        gap: 8px;
     }
 
-    #roddyrichesbox {
-        width: min(500px, 100%);
-        background: #171d22;
-        border: 1px solid #293139;
-        border-radius: 15px;
-        padding: 25px;
-        text-align: center;
-    }
+    .footer-button {
+        width: 42px;
+        height: 42px;
 
-    #roddyrichesbox h5 {
-        font-size: 22px;
-        margin: 10px;
-    }
+        border: 1px solid rgba(255, 255, 255, 0.08);
+        border-radius: 50%;
 
-    #roddyrichesbox h6 {
-        font-size: 15px;
-        line-height: 1.5;
-        color: #b8c0c5;
-    }
+        background: #18211e;
+        color: white;
 
-    .smallbutton {
-        padding: 12px 25px;
-        border: 0;
-        border-radius: 8px;
-        background: #00ffa6;
-        color: #101418;
-        font-weight: bold;
+        font-size: 19px;
+
         cursor: pointer;
     }
 
-    /* LINK */
+    /* =========================
+       NOTIFICATION
+    ========================= */
 
-    a {
-        color: #00ffa6;
+    #notification {
+        position: fixed;
+
+        left: 50%;
+        bottom: 85px;
+
+        transform: translateX(-50%) translateY(20px);
+
+        z-index: 9000;
+
+        width: min(450px, 90%);
+
+        padding: 15px 18px;
+
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        border-radius: 12px;
+
+        background: #17201c;
+
+        color: white;
+
+        text-align: center;
+
+        opacity: 0;
+        visibility: hidden;
+
+        transition:
+            opacity 0.25s ease,
+            transform 0.25s ease,
+            visibility 0.25s ease;
     }
 
-    /* MOBILE */
+    #notification.show {
+        opacity: 1;
+        visibility: visible;
 
-    @media (max-width: 600px) {
-        #maintitle {
-            font-size: 30px;
-        }
+        transform: translateX(-50%) translateY(0);
+    }
+
+    /* =========================
+       MOBILE
+    ========================= */
+
+    @media (max-width: 650px) {
 
         #header {
-            height: 65px;
+            padding: 0 12px;
         }
 
-        .headericons {
-            width: 32px;
-            height: 32px;
-            margin: 0 3px;
+        #brand-name {
+            font-size: 16px;
         }
 
-        .quickapps {
-            width: 60px;
-            height: 60px;
+        #brand-icon {
+            width: 35px;
+            height: 35px;
+        }
+
+        .header-button {
+            width: 38px;
+            height: 38px;
+        }
+
+        #main {
+            padding-top: 45px;
+        }
+
+        #apps {
+            gap: 9px;
+        }
+
+        .app-button {
+            width: 88px;
+            min-height: 90px;
+        }
+
+        .app-icon {
+            width: 42px;
+            height: 42px;
+        }
+
+        #search-form {
+            flex-direction: column;
+        }
+
+        #search-button {
+            padding: 13px;
+        }
+
+        #footer {
+            padding: 0 12px;
         }
 
         #messageforyou {
@@ -311,7 +607,9 @@
 <body>
 
 ```
-<!-- LOADING SCREEN -->
+<!-- =========================
+     LOADING SCREEN
+========================== -->
 
 <div id="loading-screen">
 
@@ -322,121 +620,208 @@
     </div>
 
     <h1 id="messageforyou">
-        frogiee WHO do you think you are sneaking into the bendy port
-        <br>
-        do you value your life?
+        Welcome to Frogie's Arcade
     </h1>
 
-    <h2>Loading...</h2>
+    <p id="loading-text">
+        Loading...
+    </p>
 
-    <h3>
-        <a id="skiploading" onclick="loadthething()">skip loading</a>
-    </h3>
-
-</div>
-
-
-<!-- HEADER -->
-
-<div id="header">
-
-    <div
-        class="logo-text"
-        onclick="window.location.href='index.html'">
-        FROGIE'S ARCADE
-    </div>
-
-    <div class="right">
-
-        <img
-            class="headericons"
-            src="https://cdn.jsdelivr.net/gh/boxethan09-hub/website-files/calc.svg"
-            alt="Math"
-            onclick="openLink('https://www.google.com/search?q=math')">
-
-        <img
-            class="headericons"
-            src="https://cdn.jsdelivr.net/gh/boxethan09-hub/website-files/grid.svg"
-            alt="Reading"
-            onclick="openLink('https://www.google.com/search?q=reading')">
-
-        <img
-            class="headericons"
-            src="https://cdn.jsdelivr.net/gh/boxethan09-hub/website-files/handshake.svg"
-            alt="Partners"
-            onclick="openLink('https://example.com')">
-
-        <img
-            class="headericons"
-            src="https://cdn.jsdelivr.net/gh/boxethan09-hub/website-files/plus.svg"
-            alt="Extras"
-            onclick="openLink('https://example.com')">
-
-    </div>
+    <p>
+        <a id="skiploading" onclick="loadthething()">
+            Skip loading
+        </a>
+    </p>
 
 </div>
 
 
-<!-- MAIN CONTENT -->
+<!-- =========================
+     HEADER
+========================== -->
 
-<div id="roddyricchboxhome">
+<header id="header">
+
+    <div id="brand" onclick="goHome()">
+
+        <div id="brand-icon">
+            🐸
+        </div>
+
+        <div id="brand-name">
+            FROGIE'S ARCADE
+        </div>
+
+    </div>
+
+    <div class="header-buttons">
+
+        <button
+            class="header-button"
+            title="Math"
+            onclick="searchWeb('math')">
+            🧮
+        </button>
+
+        <button
+            class="header-button"
+            title="Reading"
+            onclick="searchWeb('reading')">
+            📚
+        </button>
+
+        <button
+            class="header-button"
+            title="Partners"
+            onclick="showMessage('Partners section is not configured yet.')">
+            🤝
+        </button>
+
+        <button
+            class="header-button"
+            title="Extras"
+            onclick="showMessage('Extras section is not configured yet.')">
+            ➕
+        </button>
+
+    </div>
+
+</header>
+
+
+<!-- =========================
+     MAIN
+========================== -->
+
+<main id="main">
 
     <h1 id="maintitle">
         RgOUnt'i wgYwAt X4
     </h1>
 
-    <div>
+    <p id="subtitle">
+        Welcome to Frogie's Arcade. Choose an app below or use the
+        search box to find something on the web.
+    </p>
 
-        <img
-            class="quickapps"
-            src="https://cdn.jsdelivr.net/gh/boxethan09-hub/website-files/traxmojo.png"
-            alt="Traxmojo"
+
+    <!-- APP BUTTONS -->
+
+    <section id="apps">
+
+        <button
+            class="app-button"
             onclick="openLink('https://traxmojo.com/')">
 
-        <img
-            class="quickapps"
-            src="https://cdn.jsdelivr.net/gh/boxethan09-hub/website-files/movies.jpg"
-            alt="Movies"
+            <div class="app-icon">
+                🚀
+            </div>
+
+            <div class="app-name">
+                Traxmojo
+            </div>
+
+        </button>
+
+
+        <button
+            class="app-button"
             onclick="openLink('https://watch.spencerdevs.xyz/')">
 
-        <img
-            class="quickapps"
-            src="https://cdn.jsdelivr.net/gh/boxethan09-hub/website-files/tiktok.png"
-            alt="TikTok"
+            <div class="app-icon">
+                🎬
+            </div>
+
+            <div class="app-name">
+                Movies
+            </div>
+
+        </button>
+
+
+        <button
+            class="app-button"
             onclick="openLink('https://www.tiktok.com/')">
 
-        <img
-            class="quickapps"
-            src="https://cdn.jsdelivr.net/gh/boxethan09-hub/website-files/twitch.png"
-            alt="Twitch"
+            <div class="app-icon">
+                🎵
+            </div>
+
+            <div class="app-name">
+                TikTok
+            </div>
+
+        </button>
+
+
+        <button
+            class="app-button"
             onclick="openLink('https://www.twitch.tv/')">
 
-        <img
-            class="quickapps"
-            src="https://cdn.jsdelivr.net/gh/boxethan09-hub/website-files/youtube.png"
-            alt="YouTube"
+            <div class="app-icon">
+                🎮
+            </div>
+
+            <div class="app-name">
+                Twitch
+            </div>
+
+        </button>
+
+
+        <button
+            class="app-button"
             onclick="openLink('https://www.youtube.com/')">
 
-        <img
-            class="quickapps"
-            src="https://cdn.jsdelivr.net/gh/boxethan09-hub/website-files/discord.png"
-            alt="Discord"
+            <div class="app-icon">
+                ▶️
+            </div>
+
+            <div class="app-name">
+                YouTube
+            </div>
+
+        </button>
+
+
+        <button
+            class="app-button"
             onclick="openLink('https://discord.com/login')">
 
-    </div>
+            <div class="app-icon">
+                💬
+            </div>
+
+            <div class="app-name">
+                Discord
+            </div>
+
+        </button>
+
+    </section>
 
 
     <!-- SEARCH -->
 
-    <form id="shutitchicken">
+    <section id="search-section">
 
-        <input
-            id="teacher-lookup"
-            type="text"
-            placeholder="Search the web or enter a URL..."
-            autocomplete="off">
+        <form id="search-form">
 
-        <br>
+            <input
+                id="teacher-lookup"
+                type="text"
+                placeholder="Search the web or enter a URL..."
+                autocomplete="off"
+            >
+
+            <button
+                id="search-button"
+                type="submit">
+                Search
+            </button>
+
+        </form>
+
 
         <select id="regionchanger">
 
@@ -466,10 +851,10 @@
 
         </select>
 
-    </form>
+    </section>
 
 
-    <br>
+    <!-- DISCORD -->
 
     <button
         id="discord"
@@ -477,100 +862,107 @@
         Join the Discord for more links
     </button>
 
-    <br>
+
     <br>
 
-    <a href="privacy.html">
+    <a
+        id="privacy"
+        href="#"
+        onclick="showMessage('Privacy policy has not been configured yet.'); return false;">
         Privacy Policy
     </a>
 
-</div>
+</main>
 
 
-<!-- FOOTER -->
+<!-- =========================
+     NOTIFICATION
+========================== -->
 
-<div id="footer">
+<div id="notification"></div>
+
+
+<!-- =========================
+     FOOTER
+========================== -->
+
+<footer id="footer">
 
     <p id="online">
-        online users: 1
+        online users: —
     </p>
 
-    <div class="right">
-
-        <span
-            class="headericons"
-            title="Settings"
-            onclick="alert('Settings are not configured in the standalone GitHub version.')">
-            ⚙️
-        </span>
-
-        <span
-            class="headericons"
-            title="Profile">
-            👤
-        </span>
-
-    </div>
-
-</div>
-
-
-<!-- UPDATE POPUP -->
-
-<div class="rizzpopup" id="updatePopup">
-
-    <div id="roddyrichesbox">
-
-        <h5>welcome/welcome back!</h5>
-
-        <h5>A new update was released!</h5>
-
-        <h6>
-            frogie's arcade v4.31
-        </h6>
-
-        <p>
-            added:<br>
-            rocket league sideswipe
-        </p>
-
-        <p>
-            removed:<br>
-            nothing
-        </p>
-
-        <p>
-            changed:<br>
-            nothing
-        </p>
-
-        <p>
-            fixed:<br>
-            NOWGG.FUN FINALLY HOLY SHIT
-        </p>
+    <div id="footer-buttons">
 
         <button
-            class="smallbutton"
-            onclick="closeUpdate()">
-            great!
+            class="footer-button"
+            title="Settings"
+            onclick="showMessage('Settings are not configured in this standalone version.')">
+            ⚙️
+        </button>
+
+        <button
+            class="footer-button"
+            title="Profile"
+            onclick="showMessage('Profiles are not configured in this standalone version.')">
+            👤
         </button>
 
     </div>
 
-</div>
+</footer>
 
+
+<!-- =========================
+     JAVASCRIPT
+========================== -->
 
 <script>
 
-    /* OPEN A LINK */
-
+    /*
+     * Open a website in a new tab.
+     */
     function openLink(url) {
-        window.open(url, "_blank", "noopener,noreferrer");
+
+        window.open(
+            url,
+            "_blank",
+            "noopener,noreferrer"
+        );
+
     }
 
 
-    /* LOADING SCREEN */
+    /*
+     * Go back to the homepage.
+     */
+    function goHome() {
 
+        window.scrollTo({
+            top: 0,
+            behavior: "smooth"
+        });
+
+    }
+
+
+    /*
+     * Search using DuckDuckGo.
+     */
+    function searchWeb(query) {
+
+        const url =
+            "https://duckduckgo.com/?q=" +
+            encodeURIComponent(query);
+
+        openLink(url);
+
+    }
+
+
+    /*
+     * Loading screen.
+     */
     function loadthething() {
 
         const loadingScreen =
@@ -581,11 +973,12 @@
     }
 
 
-    /* AUTOMATICALLY FINISH LOADING */
+    /*
+     * Automatically remove the loading screen.
+     */
+    window.addEventListener("load", function() {
 
-    window.addEventListener("load", function () {
-
-        setTimeout(function () {
+        setTimeout(function() {
 
             loadthething();
 
@@ -594,10 +987,11 @@
     });
 
 
-    /* SEARCH */
-
+    /*
+     * Search form.
+     */
     document
-        .getElementById("shutitchicken")
+        .getElementById("search-form")
         .addEventListener("submit", function(event) {
 
             event.preventDefault();
@@ -609,11 +1003,21 @@
                 input.value.trim();
 
             if (!value) {
+
+                showMessage("Please enter something to search.");
+
                 return;
+
             }
+
 
             let url;
 
+
+            /*
+             * If the user entered a complete URL,
+             * open that URL.
+             */
             if (
                 value.startsWith("https://") ||
                 value.startsWith("http://")
@@ -621,14 +1025,27 @@
 
                 url = value;
 
-            } else if (
+            }
+
+
+            /*
+             * If it looks like a domain,
+             * add HTTPS automatically.
+             */
+            else if (
                 value.includes(".") &&
                 !value.includes(" ")
             ) {
 
                 url = "https://" + value;
 
-            } else {
+            }
+
+
+            /*
+             * Otherwise search DuckDuckGo.
+             */
+            else {
 
                 url =
                     "https://duckduckgo.com/?q=" +
@@ -636,45 +1053,73 @@
 
             }
 
+
             openLink(url);
 
         });
 
 
-    /* REGION */
-
+    /*
+     * Save selected region.
+     */
     const regionSelect =
         document.getElementById("regionchanger");
+
 
     const savedRegion =
         localStorage.getItem("calculusregion");
 
+
     if (savedRegion) {
+
         regionSelect.value = savedRegion;
+
     }
 
-    regionSelect.addEventListener("change", function() {
 
-        localStorage.setItem(
-            "calculusregion",
-            this.value
-        );
+    regionSelect.addEventListener(
+        "change",
+        function() {
 
-    });
+            localStorage.setItem(
+                "calculusregion",
+                this.value
+            );
+
+            showMessage(
+                "Region saved: " + this.options[this.selectedIndex].text
+            );
+
+        }
+    );
 
 
-    /* UPDATE POPUP */
+    /*
+     * Small notification system.
+     */
+    let notificationTimer;
 
-    function closeUpdate() {
 
-        document
-            .getElementById("updatePopup")
-            .style.display = "none";
+    function showMessage(message) {
 
-        localStorage.setItem(
-            "updateSeen",
-            "true"
-        );
+        const notification =
+            document.getElementById("notification");
+
+
+        notification.textContent = message;
+
+        notification.classList.add("show");
+
+
+        clearTimeout(notificationTimer);
+
+
+        notificationTimer =
+            setTimeout(function() {
+
+                notification.classList.remove("show");
+
+            }, 3000);
 
     }
 
