@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Frogie's Arcade</title>
+
+    <style>
+        html, body {
+            margin: 0;
+            padding: 0;
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+            background: #000;
+        }
+
+        iframe {
+            width: 100%;
+            height: 100%;
+            border: none;
+            display: block;
+        }
+    </style>
+</head>
+
+<body>
+    <iframe
+        src="https://snoopydbb-wixsite-com.filesusr.com/html/1ce7bc_ee1a218e32897c5f18855c7a5f85c451.html"
+        title="Frogie's Arcade"
+        allowfullscreen>
+    </iframe>
+</body>
+</html>
