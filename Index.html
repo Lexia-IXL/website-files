@@ -6,11 +6,6 @@
 
   <title>Frogie's Arcade</title>
 
-  <meta
-    name="description"
-    content="Frogie's Arcade - games, entertainment, and useful links."
-  >
-
   <style>
     * {
       box-sizing: border-box;
@@ -18,16 +13,16 @@
       padding: 0;
     }
 
-    html {
-      scroll-behavior: smooth;
+    html,
+    body {
+      min-height: 100%;
     }
 
     body {
       font-family: Arial, Helvetica, sans-serif;
       background:
         radial-gradient(circle at top, #173d25 0%, #08120c 45%, #040805 100%);
-      color: #ffffff;
-      min-height: 100vh;
+      color: white;
     }
 
     a {
@@ -36,7 +31,8 @@
     }
 
     button,
-    input {
+    input,
+    select {
       font: inherit;
     }
 
@@ -84,7 +80,7 @@
       position: sticky;
       top: 0;
       z-index: 100;
-      background: rgba(4, 12, 7, 0.92);
+      background: rgba(4, 12, 7, 0.95);
       backdrop-filter: blur(10px);
       border-bottom: 1px solid rgba(126, 255, 148, 0.15);
     }
@@ -137,21 +133,21 @@
     main {
       max-width: 1200px;
       margin: auto;
-      padding: 55px 20px;
+      padding: 50px 20px;
     }
 
     .hero {
       text-align: center;
-      margin-bottom: 45px;
+      margin-bottom: 35px;
     }
 
     .hero-icon {
-      font-size: 75px;
+      font-size: 70px;
       margin-bottom: 10px;
     }
 
     .hero h1 {
-      font-size: clamp(35px, 7vw, 72px);
+      font-size: clamp(35px, 7vw, 70px);
       color: #8cff9b;
       text-shadow: 0 0 25px rgba(76, 255, 108, 0.18);
     }
@@ -166,7 +162,7 @@
 
     .search-area {
       max-width: 700px;
-      margin: 0 auto 45px;
+      margin: 0 auto 40px;
     }
 
     .search-box {
@@ -198,12 +194,60 @@
       color: #061009;
       font-weight: bold;
       cursor: pointer;
-      transition: 0.2s;
     }
 
     .search-button:hover {
-      transform: translateY(-2px);
       background: #73ff88;
+    }
+
+    /* Website viewer */
+
+    #viewer-section {
+      display: none;
+      margin-bottom: 45px;
+    }
+
+    .viewer-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 15px;
+      margin-bottom: 12px;
+    }
+
+    .viewer-title {
+      color: #8cff9b;
+      font-size: 22px;
+      font-weight: bold;
+    }
+
+    .close-button {
+      border: 1px solid rgba(140, 255, 155, 0.25);
+      background: #0c1d12;
+      color: white;
+      padding: 9px 14px;
+      border-radius: 9px;
+      cursor: pointer;
+    }
+
+    .close-button:hover {
+      background: #173d25;
+    }
+
+    .iframe-wrapper {
+      width: 100%;
+      height: 700px;
+      background: #050805;
+      border: 1px solid rgba(140, 255, 155, 0.2);
+      border-radius: 15px;
+      overflow: hidden;
+    }
+
+    #website-frame {
+      width: 100%;
+      height: 100%;
+      border: none;
+      background: white;
     }
 
     /* Cards */
@@ -212,7 +256,6 @@
       text-align: center;
       margin-bottom: 22px;
       font-size: 28px;
-      color: #ffffff;
     }
 
     .apps {
@@ -230,7 +273,7 @@
       border: 1px solid rgba(140, 255, 155, 0.15);
       border-radius: 18px;
       padding: 25px;
-      min-height: 170px;
+      min-height: 175px;
       display: flex;
       flex-direction: column;
       justify-content: space-between;
@@ -238,14 +281,14 @@
     }
 
     .app-card:hover {
-      transform: translateY(-6px);
+      transform: translateY(-5px);
       border-color: rgba(140, 255, 155, 0.5);
       box-shadow: 0 12px 30px rgba(0, 0, 0, 0.3);
     }
 
     .app-icon {
       font-size: 40px;
-      margin-bottom: 15px;
+      margin-bottom: 12px;
     }
 
     .app-card h3 {
@@ -261,14 +304,13 @@
     }
 
     .open-button {
-      display: inline-block;
       width: 100%;
-      text-align: center;
       padding: 11px;
       border-radius: 10px;
       background: #12321d;
       border: 1px solid rgba(140, 255, 155, 0.18);
       color: #8cff9b;
+      cursor: pointer;
       transition: 0.2s;
     }
 
@@ -316,12 +358,6 @@
       background: #5865f2;
       color: white;
       font-weight: bold;
-      transition: 0.2s;
-    }
-
-    .discord-button:hover {
-      transform: translateY(-2px);
-      filter: brightness(1.1);
     }
 
     /* Footer */
@@ -334,7 +370,7 @@
       border-top: 1px solid rgba(140, 255, 155, 0.08);
     }
 
-    /* Notifications */
+    /* Notification */
 
     #notification {
       position: fixed;
@@ -370,10 +406,6 @@
         justify-content: center;
       }
 
-      main {
-        padding-top: 35px;
-      }
-
       .search-box {
         flex-direction: column;
       }
@@ -382,8 +414,12 @@
         width: 100%;
       }
 
-      .hero-icon {
-        font-size: 55px;
+      .iframe-wrapper {
+        height: 550px;
+      }
+
+      .viewer-header {
+        align-items: flex-start;
       }
     }
   </style>
@@ -392,14 +428,19 @@
 <body>
 
   <!-- Loading Screen -->
+
   <div id="loading-screen">
     <div class="loader-box">
       <div class="frog">🐸</div>
-      <div class="loading-text">Loading Frogie's Arcade...</div>
+      <div class="loading-text">
+        Loading Frogie's Arcade...
+      </div>
     </div>
   </div>
 
+
   <!-- Header -->
+
   <header>
     <div class="header-inner">
 
@@ -409,19 +450,29 @@
       </a>
 
       <div class="header-buttons">
-        <button class="header-button" onclick="showNotice('Welcome to Frogie\\'s Arcade!')">
+
+        <button
+          class="header-button"
+          onclick="goHome()"
+        >
           🏠 Home
         </button>
 
-        <button class="header-button" onclick="showNotice('More features coming soon!')">
+        <button
+          class="header-button"
+          onclick="showNotice('More features coming soon!')"
+        >
           ⚙️ Settings
         </button>
+
       </div>
 
     </div>
   </header>
 
+
   <!-- Main -->
+
   <main>
 
     <section class="hero">
@@ -431,12 +482,14 @@
       <h1>Frogie's Arcade</h1>
 
       <p>
-        Welcome! Choose something below to get started.
+        Choose a website below. It will open inside this page.
       </p>
 
     </section>
 
+
     <!-- Search -->
+
     <section class="search-area">
 
       <div class="search-box">
@@ -459,155 +512,226 @@
 
     </section>
 
-    <!-- Apps -->
+
+    <!-- Website Viewer -->
+
+    <section id="viewer-section">
+
+      <div class="viewer-header">
+
+        <div
+          id="viewer-title"
+          class="viewer-title"
+        >
+          Website
+        </div>
+
+        <button
+          class="close-button"
+          onclick="closeViewer()"
+        >
+          ✕ Close
+        </button>
+
+      </div>
+
+      <div class="iframe-wrapper">
+
+        <iframe
+          id="website-frame"
+          title="Website Viewer"
+          allowfullscreen
+        ></iframe>
+
+      </div>
+
+    </section>
+
+
+    <!-- Quick Links -->
+
     <section>
 
-      <h2 class="section-title">Quick Links</h2>
+      <h2 class="section-title">
+        Quick Links
+      </h2>
 
       <div class="apps">
+
+
+        <!-- Traxmojo -->
 
         <div class="app-card">
 
           <div>
+
             <div class="app-icon">🎮</div>
 
             <h3>Traxmojo</h3>
 
             <p>
-              Open Traxmojo.
+              Open Traxmojo inside the page.
             </p>
+
           </div>
 
-          <a
+          <button
             class="open-button"
-            href="https://traxmojo.com/"
-            target="_blank"
-            rel="noopener noreferrer"
+            onclick="openWebsite(
+              'Traxmojo',
+              'https://traxmojo.com/'
+            )"
           >
             Open
-          </a>
+          </button>
 
         </div>
 
 
+        <!-- Movies -->
+
         <div class="app-card">
 
           <div>
+
             <div class="app-icon">🎬</div>
 
             <h3>Movies</h3>
 
             <p>
-              Open the movie site.
+              Open the movie website inside the page.
             </p>
+
           </div>
 
-          <a
+          <button
             class="open-button"
-            href="https://watch.spencerdevs.xyz/"
-            target="_blank"
-            rel="noopener noreferrer"
+            onclick="openWebsite(
+              'Movies',
+              'https://watch.spencerdevs.xyz/'
+            )"
           >
             Open
-          </a>
+          </button>
 
         </div>
 
 
+        <!-- TikTok -->
+
         <div class="app-card">
 
           <div>
+
             <div class="app-icon">🎵</div>
 
             <h3>TikTok</h3>
 
             <p>
-              Open TikTok.
+              Open TikTok inside the page.
             </p>
+
           </div>
 
-          <a
+          <button
             class="open-button"
-            href="https://www.tiktok.com/"
-            target="_blank"
-            rel="noopener noreferrer"
+            onclick="openWebsite(
+              'TikTok',
+              'https://www.tiktok.com/'
+            )"
           >
             Open
-          </a>
+          </button>
 
         </div>
 
 
+        <!-- Twitch -->
+
         <div class="app-card">
 
           <div>
+
             <div class="app-icon">🟣</div>
 
             <h3>Twitch</h3>
 
             <p>
-              Open Twitch.
+              Open Twitch inside the page.
             </p>
+
           </div>
 
-          <a
+          <button
             class="open-button"
-            href="https://www.twitch.tv/"
-            target="_blank"
-            rel="noopener noreferrer"
+            onclick="openWebsite(
+              'Twitch',
+              'https://www.twitch.tv/'
+            )"
           >
             Open
-          </a>
+          </button>
 
         </div>
 
 
+        <!-- YouTube -->
+
         <div class="app-card">
 
           <div>
+
             <div class="app-icon">▶️</div>
 
             <h3>YouTube</h3>
 
             <p>
-              Open YouTube.
+              Open YouTube inside the page.
             </p>
+
           </div>
 
-          <a
+          <button
             class="open-button"
-            href="https://www.youtube.com/"
-            target="_blank"
-            rel="noopener noreferrer"
+            onclick="openWebsite(
+              'YouTube',
+              'https://www.youtube.com/'
+            )"
           >
             Open
-          </a>
+          </button>
 
         </div>
 
 
+        <!-- Discord -->
+
         <div class="app-card">
 
           <div>
+
             <div class="app-icon">💬</div>
 
             <h3>Discord</h3>
 
             <p>
-              Open Discord.
+              Open Discord inside the page.
             </p>
+
           </div>
 
-          <a
+          <button
             class="open-button"
-            href="https://discord.com/"
-            target="_blank"
-            rel="noopener noreferrer"
+            onclick="openWebsite(
+              'Discord',
+              'https://discord.com/'
+            )"
           >
             Open
-          </a>
+          </button>
 
         </div>
+
 
       </div>
 
@@ -615,9 +739,12 @@
 
 
     <!-- Region -->
+
     <section class="region-section">
 
-      <h2 class="section-title">Region</h2>
+      <h2 class="section-title">
+        Region
+      </h2>
 
       <p>
         Choose your preferred region.
@@ -628,32 +755,49 @@
         class="region-select"
         onchange="saveRegion()"
       >
-        <option value="us">United States</option>
-        <option value="ca">Canada</option>
-        <option value="uk">United Kingdom</option>
-        <option value="au">Australia</option>
+
+        <option value="us">
+          United States
+        </option>
+
+        <option value="ca">
+          Canada
+        </option>
+
+        <option value="uk">
+          United Kingdom
+        </option>
+
+        <option value="au">
+          Australia
+        </option>
+
       </select>
 
     </section>
 
 
     <!-- Discord -->
+
     <section class="discord-section">
 
-      <h2>🐸 Join the Community</h2>
+      <h2>
+        🐸 Join the Community
+      </h2>
 
       <p>
         Connect with the community on Discord.
       </p>
 
-      <a
+      <button
         class="discord-button"
-        href="https://discord.com/"
-        target="_blank"
-        rel="noopener noreferrer"
+        onclick="openWebsite(
+          'Discord',
+          'https://discord.com/'
+        )"
       >
-        Open Discord
-      </a>
+        Open Discord Here
+      </button>
 
     </section>
 
@@ -661,6 +805,7 @@
 
 
   <!-- Footer -->
+
   <footer>
 
     <p>
@@ -675,12 +820,13 @@
 
 
   <!-- Notification -->
+
   <div id="notification"></div>
 
 
   <script>
 
-    /* Loading */
+    /* Loading screen */
 
     window.addEventListener("load", function () {
 
@@ -692,7 +838,9 @@
         loadingScreen.style.opacity = "0";
 
         setTimeout(function () {
+
           loadingScreen.style.display = "none";
+
         }, 500);
 
       }, 700);
@@ -700,26 +848,65 @@
     });
 
 
-    /* Notifications */
+    /* Open website inside iframe */
 
-    let notificationTimer;
+    function openWebsite(name, url) {
 
-    function showNotice(message) {
+      const viewer =
+        document.getElementById("viewer-section");
 
-      const notification =
-        document.getElementById("notification");
+      const frame =
+        document.getElementById("website-frame");
 
-      notification.textContent = message;
+      const title =
+        document.getElementById("viewer-title");
 
-      notification.classList.add("show");
+      title.textContent = "Now viewing: " + name;
 
-      clearTimeout(notificationTimer);
+      frame.src = url;
 
-      notificationTimer = setTimeout(function () {
+      viewer.style.display = "block";
 
-        notification.classList.remove("show");
+      viewer.scrollIntoView({
+        behavior: "smooth",
+        block: "start"
+      });
 
-      }, 2500);
+    }
+
+
+    /* Close iframe */
+
+    function closeViewer() {
+
+      const viewer =
+        document.getElementById("viewer-section");
+
+      const frame =
+        document.getElementById("website-frame");
+
+      frame.src = "about:blank";
+
+      viewer.style.display = "none";
+
+      window.scrollTo({
+        top: 0,
+        behavior: "smooth"
+      });
+
+    }
+
+
+    /* Home */
+
+    function goHome() {
+
+      closeViewer();
+
+      window.scrollTo({
+        top: 0,
+        behavior: "smooth"
+      });
 
     }
 
@@ -731,7 +918,8 @@
       const input =
         document.getElementById("searchInput");
 
-      const query = input.value.trim();
+      const query =
+        input.value.trim();
 
       if (!query) {
 
@@ -740,54 +928,37 @@
         input.focus();
 
         return;
-      }
-
-      /*
-        If the user enters a complete URL,
-        open that URL.
-
-        Otherwise search DuckDuckGo.
-      */
-
-      let destination;
-
-      if (
-        query.startsWith("https://") ||
-        query.startsWith("http://")
-      ) {
-
-        destination = query;
-
-      } else {
-
-        destination =
-          "https://duckduckgo.com/?q=" +
-          encodeURIComponent(query);
 
       }
 
-      window.open(
-        destination,
-        "_blank",
-        "noopener,noreferrer"
+      const searchUrl =
+        "https://duckduckgo.com/?q=" +
+        encodeURIComponent(query);
+
+      openWebsite(
+        "Search",
+        searchUrl
       );
 
     }
 
 
-    /* Enter key for search */
+    /* Enter key */
 
     document
       .getElementById("searchInput")
-      .addEventListener("keydown", function(event) {
+      .addEventListener(
+        "keydown",
+        function(event) {
 
-        if (event.key === "Enter") {
+          if (event.key === "Enter") {
 
-          performSearch();
+            performSearch();
+
+          }
 
         }
-
-      });
+      );
 
 
     /* Region */
@@ -804,29 +975,72 @@
 
       showNotice(
         "Region saved: " +
-        select.options[select.selectedIndex].text
+        select.options[
+          select.selectedIndex
+        ].text
       );
 
     }
 
 
-    /* Load saved region */
+    /* Load region */
 
-    window.addEventListener("DOMContentLoaded", function() {
+    window.addEventListener(
+      "DOMContentLoaded",
+      function() {
 
-      const savedRegion =
-        localStorage.getItem("frogieRegion");
+        const savedRegion =
+          localStorage.getItem(
+            "frogieRegion"
+          );
 
-      if (savedRegion) {
+        if (savedRegion) {
 
-        const select =
-          document.getElementById("regionSelect");
+          document.getElementById(
+            "regionSelect"
+          ).value = savedRegion;
 
-        select.value = savedRegion;
+        }
 
       }
+    );
 
-    });
+
+    /* Notifications */
+
+    let notificationTimer;
+
+    function showNotice(message) {
+
+      const notification =
+        document.getElementById(
+          "notification"
+        );
+
+      notification.textContent =
+        message;
+
+      notification.classList.add(
+        "show"
+      );
+
+      clearTimeout(
+        notificationTimer
+      );
+
+      notificationTimer =
+        setTimeout(
+          function() {
+
+            notification.classList.remove(
+              "show"
+            );
+
+          },
+          2500
+        );
+
+    }
 
   </script>
 
